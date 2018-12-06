@@ -1,0 +1,3 @@
+*.txt
+*.bkp
+__pycache__
