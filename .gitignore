@@ -1,4 +1,4 @@
 *.json
-*.txt
+config.txt
 *.bkp
 __pycache__

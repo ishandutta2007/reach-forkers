@@ -69,9 +69,10 @@ def get_bio(s, fork_url):
 	return line
 
 def get_forkers_url(root_url):
+	mem_url = root_url + "/network/members"
 	fork_urls = []
 	try:
-		req = Request(root_url , headers={'User-Agent': 'Mozilla/5.0'})
+		req = Request(mem_url , headers={'User-Agent': 'Mozilla/5.0'})
 		html_source = urlopen(req).read()
 		parsed_html = BeautifulSoup(html_source, 'html.parser')
 		forks = parsed_html.find_all("div", class_="repo")
@@ -81,16 +82,16 @@ def get_forkers_url(root_url):
 				if len(l['href'].split('/')) > 2:
 					fork_urls.append("https://github.com" + l['href'])
 	except urllib.error.URLError as e:
-		print("Seems URL changed for: " + root_url)
+		print("Seems URL changed for: " + mem_url)
 		print(e)
 	except Exception as e:
-		print("Unknown Error: " + root_url)
+		print("Unknown Error: " + mem_url)
 		print(e)
 	return fork_urls
 
 def main():
 	parser = argparse.ArgumentParser()
-	parser.add_argument('--repo', default="https://github.com/thomasmesnard/DeepMind-Teaching-Machines-to-Read-and-Comprehend/network/members")
+	parser.add_argument('--repo', default="https://github.com/thomasmesnard/DeepMind-Teaching-Machines-to-Read-and-Comprehend")
 	args = parser.parse_args()
 	fork_urls = get_forkers_url(args.repo)
 	with open('email-list.csv','wb') as file:
